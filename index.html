@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        .container{
+            margin-top: 40px;
+            padding: 20px;
+        }
+        .box{
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 100%;
+            background-color: red;
+            top: -10px;
+            
+        }
+        .bar{
+            position: relative;
+            margin-bottom: 60px;
+            width: 255px;
+            height: 5px;
+            border-radius: 10px;
+            background-color: blue;
+            left: 50px;
+        }
+
+        .colorBox{
+            position: absolute;
+            text-align: center;
+            width: 300px;
+            height: 200px;
+            background-color: rgb(220, 141, 233);
+            top: 40px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+  
+    <div class="container">
+        <span>  red  </span>
+        <div class="bar">
+            <div class="box" id="div1"></div>
+        </div>
+        <span> green </span>
+        <div class="bar">
+            <div class="box" id="div2"></div>
+        </div>
+        <span> blue </span>
+        <div class="bar">
+          <div class="box" id="div3"></div>
+        </div>
+    </div>
+        
+        <div class="colorBox" id="div4"></div>
+
+
+    <script>
+        document.onmousemove = fmm;
+        document.onmouseup = fmu;
+        let red = 0,green = 0, blue = 0;
+        var x,y,xo,yo;
+        var ob = null;
+        const divColor = document.querySelector(".colorBox");
+ 
+
+        function fmm(ev){
+            
+            x = ev.pageX;
+            // x-xo اگر تفاوت فاصله بین  
+            if (ob != null && (x-xo) >= 0 && (x-xo) <= 255){
+                ob.style.left = (x-xo)+'px';
+                // کدام اهرم در حال حرکت است رنگ را تغییر بده
+                switch (ob.id){
+                    case "div1":
+                        divColor.style.backgroundColor = `rgb(${red = ob.offsetLeft},${green},${blue})`;
+                        break;
+                    case "div2":
+                        divColor.style.backgroundColor = `rgb(${red},${green = ob.offsetLeft},${blue})`;
+                        break;
+                    case "div3":
+                        divColor.style.backgroundColor = `rgb(${red},${green},${blue = ob.offsetLeft})`;
+                        break;
+                }
+                // با استفاده از "بک تیک" میشه متغیرها رو مستفیم در رشته متنی قرار داد
+                divColor.innerHTML = `rgb(${red},${green},${blue})`;
+            }
+
+            document.getElementById(ev.target.id).onmousedown = function(){
+                fmd(this);
+                return false;
+            }
+        }
+
+        function fmu(){
+            ob.style.backgroundColor = "red";
+            ob = null;
+        }
+        function fmd(obj){
+            ob = obj;
+            ob.style.backgroundColor = "yellow";
+            xo = x - ob.offsetLeft;
+        }
+    </script>
+</body>
+</html>
